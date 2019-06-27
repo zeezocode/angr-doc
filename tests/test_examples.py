@@ -112,6 +112,7 @@ def test_example_inclusion():
 if __name__ == '__main__':
     test_example_inclusion()
 
-    for fname, func in globals().items():
+    constant = list(globals().items())
+    for fname, func in constant:
         if callable(func) and fname.startswith('test_') and fname != 'test_example_inclusion':
             func()
